@@ -1,0 +1,252 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+body {
+    background-color: #FFFDD0;
+}
+
+#headerOne {
+    font-family: "Borel", sans-serif;
+    height: 100px;
+    width: 100vw;
+    background-image: linear-gradient(to right, #87CEFA, purple);
+    text-align: center;
+    color: #FFFDD0;
+    font-size: 40px;
+    line-height: 129px;
+}
+
+#headerTwo {
+    font-family: "Borel", sans-serif;
+    height: 50px;
+    width: 100vw;
+    background-image: linear-gradient(to right, #87CEFA, purple);
+    text-align: center;
+    color: #FFFDD0;
+    font-size: 30px;
+    line-height: 75px;
+}
+
+.linebreak {
+    height: 2px;
+    flex-basis: 100%;
+}
+
+.formStyleSearchPage{
+    background-image: linear-gradient(#87CEFA, purple);
+    padding: 20px;
+    width: 280px;
+    display: flex;
+    flex-wrap: wrap; /*DO NOT FORGET THIS*/
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.formStyleResultsPage {
+    padding: 20px;
+    width: 350px;
+    padding-right: 35px;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+.formStyleResultsPageHeader {
+    font-size: 30px;
+    font-family: "Borel", sans-serif;
+}
+
+.formStyleSearchPageHeader{
+    font-size: 30px;
+    padding: 5px;
+    font-family: "Borel", sans-serif;
+}
+
+#resultsPageHeader {
+    padding: 5px;
+}
+
+.formStyleSearchPage input {
+    padding-left: 3px;
+    height: 20px;
+}
+
+.formStyleResultsPage input {
+    padding-left: 3px;
+    height: 35px;
+    width: 100%;
+}
+
+#searchBarButtonSearch {
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    font-size: 30px;
+}
+
+.formStyleResultsPage button {
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    font-size: 30px;
+}
+
+#sunnyImage {
+    position: absolute;
+    top: 90px;
+    left: 50px;
+}
+
+#treeImage {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+#sand {
+    position: absolute;
+    bottom: 0px;
+    width: 100vw;
+    height: 200px;
+}
+
+@media screen and (max-width: 940px) {
+    #sunnyImage {
+        width: 190px;
+        height: 190px;
+        left: 0px;
+        top: 110px;
+        transition: width 0.5s ease, height 0.5s ease;
+    }
+    #treeImage {
+        width: 140px;
+        height: 230px;
+        transition: width 0.5s ease, height 0.5s ease;
+    }
+}
+
+.ui-autocomplete {
+    color: #FFFDD0;;
+    background-image: linear-gradient(#87CEFA, purple);
+    width: 100px;
+    line-height: 30px;
+    padding-left: 5px;
+}
+
+.ui-helper-hidden-accessible {
+    display: none;
+  }
+/*USED TO GET RID OF HELPER TEXT*/
+
+.resultsPage {
+    margin: 10px;
+    border: 3px solid black;
+    flex-grow: 1;
+    /*remember to make this flex-grow: 1, and not flex-grow: 100%;*/
+}
+
+#cityName {
+    padding: 5px;
+    font-size: 30px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#temp {
+    padding: 10px;
+    font-size: 17px;
+}
+
+#wind {
+    padding: 10px;
+    font-size: 17px;
+}
+
+#humidity {
+    padding: 10px;
+    font-size: 17px;
+}
+
+.linebreak {
+    flex-basis: 100%;
+    height: 0;
+}
+
+#searchHistory {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    width: 400px;
+}
+
+.block {
+    height: 45px;
+    margin-left: 15px;
+    margin-top: 15px;
+    border: 5px solid black;
+    text-align: center;
+    width: 400px;
+    background-color: #A9A9A9;
+}
+
+#weatherCardContainer {
+    margin: 15px;
+    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex-grow: 1;
+    height: 240px;
+}
+
+#cardForecastHeader {
+    width: 100%;
+    height: 20px;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+.card {
+    margin-right: 15px;
+    width: 150px;
+    height: 220px;
+    background-color: #36454f;
+}
+
+#cardDate {
+    margin-bottom: 10px;
+    font-size: 20px;
+    margin: 7px;
+    color: white;
+    font-weight: bold;
+}
+
+#cardTemp {
+    margin-bottom: 10px;
+    margin: 7px;
+    margin-top: 10px;
+    color: white;
+}
+
+#cardWind {
+    margin-bottom: 10px;
+    margin: 7px;
+    margin-top: 10px;
+    color: white;
+}
+
+#cardHumidity {
+    margin-bottom: 10px;
+    margin: 7px;
+    margin-top: 10px;
+    color: white;
+}
