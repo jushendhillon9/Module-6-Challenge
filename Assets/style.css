@@ -13,7 +13,7 @@ body {
     font-family: "Borel", sans-serif;
     height: 100px;
     width: 100vw;
-    background-image: linear-gradient(to right, #87CEFA, purple);
+    background-image: linear-gradient(to right, orange, red);
     text-align: center;
     color: #FFFDD0;
     font-size: 40px;
@@ -24,7 +24,7 @@ body {
     font-family: "Borel", sans-serif;
     height: 50px;
     width: 100vw;
-    background-image: linear-gradient(to right, #87CEFA, purple);
+    background-image: linear-gradient(to right, orange, red);
     text-align: center;
     color: #FFFDD0;
     font-size: 30px;
@@ -37,7 +37,7 @@ body {
 }
 
 .formStyleSearchPage{
-    background-image: linear-gradient(#87CEFA, purple);
+    background-image: linear-gradient(orange, purple);
     padding: 20px;
     width: 280px;
     display: flex;
@@ -88,6 +88,7 @@ body {
     width: 100%;
     height: 40px;
     font-size: 30px;
+    background-color: #E2DFD2;
 }
 
 .formStyleResultsPage button {
@@ -148,6 +149,7 @@ body {
     border: 3px solid black;
     flex-grow: 1;
     /*remember to make this flex-grow: 1, and not flex-grow: 100%;*/
+    background-color: #E2DFD2;
 }
 
 #cityName {
@@ -155,7 +157,13 @@ body {
     font-size: 30px;
 }
 
-.container {
+.pageOne {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.pageTwo {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -186,6 +194,7 @@ body {
     flex-wrap: wrap;
     margin-top: 15px;
     width: 400px;
+    height: 100px;
 }
 
 .block {
@@ -194,13 +203,15 @@ body {
     margin-top: 15px;
     border: 5px solid black;
     text-align: center;
+    line-height: 60px;
+    font-size: 25px;
     width: 400px;
-    background-color: #A9A9A9;
+    background-color: #E2DFD2;
+    font-family: "Borel", sans-serif;
 }
 
 #weatherCardContainer {
-    margin: 15px;
-    margin-left: 30px;
+    margin: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -219,7 +230,8 @@ body {
     margin-right: 15px;
     width: 150px;
     height: 220px;
-    background-color: #36454f;
+    background-image: linear-gradient(#87CEFA, purple); /*cold day*/
+    /*background-image: linear-gradient(orange, red); /*hot day*/
 }
 
 #cardDate {
@@ -249,4 +261,27 @@ body {
     margin: 7px;
     margin-top: 10px;
     color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: flex;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    left: 60px;
+}
+
+.hotCardBackground {
+    background-image: linear-gradient(orange, purple);
+}
+
+.coldCardBackground {
+    background-image: linear-gradient(#87CEFA, purple);
 }
