@@ -1,4 +1,5 @@
-var citySearchBar = $("#citySearchBar");
+var citySearchBarSearch = $("#citySearchBarSearch");
+var citySearchBarResults = $("#citySearchBarResults");
 var searchBarButtonResults = $("#searchBarButtonResults");
 var searchBarButtonSearch = $("#searchBarButtonSearch");
 var resultsPage = $(".resultsPage");
@@ -16,71 +17,46 @@ var cityName;
 var theDate;
 var latitude;
 var longitude;
-var firstSearchIndex = 0;
+var listOfCities = [];
 var cityNameArray = [];
 localStorage.setItem("searchHistory", JSON.stringify(cityNameArray));
 //must stringify the array before saving it to localStorage
 //localStorage only accepts strings, not objects
 //it will accept an array of strings, and .stringify() allows us to meet this requirement.
 
-console.log(dayjs.unix(1661857200).format("hA"));
-console.log(dayjs.unix(1661943600).format("hA"));
 
 
 
-
-
-
-searchBarButtonSearch.on("click", function (event) {
-  cityName = citySearchBar.val();
-  localStorage.setItem("firstSearch", cityName);
-  //needs to switch from first page to second page
-  populateResultsPage();
-});
-
-searchBarButtonResults.on("click", function (someEvent) {
-  cityName = citySearchBar.val();
-  populateResultsPage();
-});
-
-
-window.addEventListener('hashchange', function(event) {
-  // URL hash has changed
-  console.log('URL hash changed:', window.location.hash);
-});
-
-
+function getListOfCities () {
+    var requestURL = "https://countriesnow.space/api/v0.1/countries/population/cities";
+    fetch (requestURL)
+        .then (function (response) {
+            return response.json();
+        })
+        .then (function (data) {
+            var theData = data.data;
+            for (var i = 0; i < theData.length; i ++) {
+                if ((theData[i].city).indexOf("(CA)") !== -1) {
+                    theData[i].city = (theData[i].city).replace("(CA)", "");
+                }
+                listOfCities.push(theData[i].city);
+            }
+        })
+}
+getListOfCities();
 
 
 
 //jQuery autocomplete widget (its function)
 $(function() {
-    var mostPopularCities = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-    citySearchBar.autocomplete({
-        source: mostPopularCities,
+    citySearchBarSearch.autocomplete({
+        source: listOfCities,
+        messages: {
+            noResults: ' '
+            }
+        })
+    citySearchBarResults.autocomplete({
+        source: listOfCities,
         messages: {
             noResults: ' '
             }
@@ -112,7 +88,6 @@ $(function() {
 
   function getWeatherAPI() {
     var requestURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=d171e367df691d66fee21472f6942e95";
-    console.log(requestURL);
     //for Los Angeles";
     fetch(requestURL)
     //fetch funcion (a call to the server) is called with the request URL to retrieve
@@ -124,7 +99,7 @@ $(function() {
             //promise is not too relevant, know we parse the data that the server provides
         })
         .then(function (data) {
-          //this then function now handles the parsed JSON Data
+            //this then function now handles the parsed JSON Data
             //in this case, we log the parsed data to the console
             console.log(data);
             //looking at the console log of the data object, it shows a property called list that contains an array of 40 objects
@@ -172,7 +147,6 @@ $(function() {
             for (var i = 0; i < forecast.length; i++) {
               var loopDay = dayjs.unix(forecast[i].dt).format("DD");
               //loopDay is the current Day that the forecast loop is on
-              console.log(dayjs.unix(forecast[i].dt).format("(MM/DD/YYYY)"));
               //loopDay keeps track of what day we are currently on in the hourly forecasts
               if (loopDay > toDay) {
                 $((weatherCards[cardIndexOne])).children().eq(0).text(dayjs.unix(forecast[i].dt).format("(MM/DD/YYYY)"));
@@ -182,24 +156,47 @@ $(function() {
               if (dayjs.unix(forecast[i].dt).format("hA") == "11AM") {
                 var newTemp = ((forecast[i].main.temp-273.15) * (9/5) + 32).toFixed(2);
                 $(weatherCards[cardIndexTwo]).children().eq(1).text("Temp: " + newTemp + " °F");
-                $(weatherCards[cardIndexTwo]).children().eq(2).text("Wind: " + forecast[i].wind.speed + " MPH");
-                $(weatherCards[cardIndexTwo]).children().eq(3).text("Humidity: " + forecast[i].main.humidity + " %");
+                if (newTemp > 77) {
+                    $(weatherCards[cardIndexTwo]).children().eq(2).attr("src", "./Assets/sunIcon.png");
+                    $(weatherCards[cardIndexTwo]).addClass("hotCardBackground");
+                }
+                else {
+                    $(weatherCards[cardIndexTwo]).children().eq(2).attr("src", "./Assets/snowflake.png");
+                    $(weatherCards[cardIndexTwo]).addClass("coldCardBackground");
+                }
+                $(weatherCards[cardIndexTwo]).children().eq(3).text("Wind: " + forecast[i].wind.speed + " MPH");
+                $(weatherCards[cardIndexTwo]).children().eq(4).text("Humidity: " + forecast[i].main.humidity + " %");
                 cardIndexTwo++;
-              }
-            }
+              };
+        };
         })
-      };
-            
+    };
+            //populates the weatherCards with respective weather details
+//this function is designed to use the coordinates provided by the getGeoCoding API to 
+//get the weather forecast for that pair of coordinates
 
-function populateResultsPage() {
+function populateResultsPage(cityName) {
     getGeoCodingAPI();
     setTimeout(getWeatherAPI, 2000);
     setTimeout(populateTodaysResults, 4000);
-    saveToSearchHistory();
+    saveToSearchHistory(cityName);
     populatePastSearches();
 }
 
+searchBarButtonSearch.on("click", function (event) {
+    cityName = citySearchBarSearch.val();
+    $(".pageOne").removeClass("visible");
+    $(".pageOne").addClass("hidden");
+    $(".pageTwo").removeClass("hidden");
+    $(".pageTwo").addClass("visible");
+    //needs to switch from first page to second page
+    populateResultsPage(cityName);
+});
 
+searchBarButtonResults.on("click", function (someEvent) {
+    cityName = citySearchBarResults.val();
+    populateResultsPage(cityName);
+  });
 
 function populateTodaysResults () {
   headerOne.text(cityName + ", " + theDate);
@@ -208,8 +205,9 @@ function populateTodaysResults () {
   humidity.text("Humidity: " + theHumidity + " %");
 }
 
-function saveToSearchHistory () {
-    cityName = citySearchBar.val();
+function saveToSearchHistory (cityName) {
+    //need to indicate what value cityName is set to depending on which searchButton is pressed
+    //event.target?
     var theArray = localStorage.getItem("searchHistory");
     var searchHistory = JSON.parse(theArray);
     //searchHistory is now a parsed array of objects
@@ -236,12 +234,30 @@ pastSearchesContainer.on("click", function(event) {
   var clicked = event.target;
   if (clicked.matches(".block")) {
     cityName = clicked.textContent;
-    console.log(cityName);
     getGeoCodingAPI();
     setTimeout(getWeatherAPI, 2000);
     setTimeout(populateTodaysResults, 4000);
+    //need to restructure the array to have the search history accurately reflect the most recent search
+    var theArray = localStorage.getItem("searchHistory");
+    var searchHistory = JSON.parse(theArray);
+    console.log(searchHistory);
+   for (var i = 0; i < searchHistory.length; i++) {
+    if (searchHistory[i] == event.target.textContent) {
+        var theRemovedName = searchHistory[i];
+        searchHistory.splice(i, 1);
+        console.log(searchHistory);
+        //first parameter of .splice() is the index at which the elements will begin to be removed
+        //the second parameter of .splice() is the number of elements in the array that will be removed following the provided index
+        searchHistory.unshift(theRemovedName);
+        console.log(searchHistory);
+   }
   }
+  var pastSearches = $(".block");
+  for (var i = 0; i < pastSearches.length; i++) {
+    $(pastSearches[i]).text(searchHistory[i]);
+  }
+  //reorder searches here
+}
 });
-
 
 //when you click on an element with a class of block, it reruns the functions that populate the weather forecast page
