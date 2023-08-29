@@ -70,6 +70,7 @@ body {
 
 #resultsPageHeader {
     padding: 5px;
+    font-size: 30px;
 }
 
 .formStyleSearchPage input {
@@ -171,17 +172,17 @@ body {
 
 #temp {
     padding: 10px;
-    font-size: 17px;
+    font-size: 27px;
 }
 
 #wind {
     padding: 10px;
-    font-size: 17px;
+    font-size: 27px;
 }
 
 #humidity {
     padding: 10px;
-    font-size: 17px;
+    font-size: 27px;
 }
 
 .linebreak {

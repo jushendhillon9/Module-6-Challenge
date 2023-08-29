@@ -39,6 +39,12 @@ function getListOfCities () {
                 if ((theData[i].city).indexOf("(CA)") !== -1) {
                     theData[i].city = (theData[i].city).replace("(CA)", "");
                 }
+                if ((theData[i].city).indexOf("(FL)") !== -1) {
+                  theData[i].city = (theData[i].city).replace("(FL)", "");
+                }
+                if ((theData[i].city).indexOf("(NY)") !== -1) {
+                  theData[i].city = (theData[i].city).replace("(NY)", "");
+                }
                 listOfCities.push(theData[i].city);
             }
         })
@@ -121,6 +127,11 @@ $(function() {
             theWind = theWind.toFixed(2);
 
             theHumidity = forecast[0].main.humidity;
+
+            headerOne.text(cityName + ", " + theDate);
+            temp.text("Temp: " + theTemp + " °F");
+            wind.text("Wind: " + theWind + " MPH");
+            humidity.text("Humidity: " + theHumidity + " %");
             
             //want to display the date of each days that forecast readings are given on each of the cards
               //loopDay and toDay should be equal always, and as soon as its not its because loopDay has reached a new day
@@ -139,6 +150,7 @@ $(function() {
 
 
             var toDay = dayjs.unix(forecast[0].dt).format("DD");
+            var thisMonth = dayjs.unix(forecast[0].dt).format("MM");
             //toDay is the current day
             //increments by one when loopDay exceeds 
             var cardIndexOne = 0;
@@ -146,11 +158,13 @@ $(function() {
             //should increment by one every time toDay increments
             for (var i = 0; i < forecast.length; i++) {
               var loopDay = dayjs.unix(forecast[i].dt).format("DD");
+              var loopMonth = dayjs.unix(forecast[i].dt).format("MM")
               //loopDay is the current Day that the forecast loop is on
               //loopDay keeps track of what day we are currently on in the hourly forecasts
-              if (loopDay > toDay) {
+              if (loopDay > toDay || loopMonth>thisMonth) {
                 $((weatherCards[cardIndexOne])).children().eq(0).text(dayjs.unix(forecast[i].dt).format("(MM/DD/YYYY)"));
                 toDay=loopDay;
+                thisMonth = loopMonth
                 cardIndexOne++;
               }
               if (dayjs.unix(forecast[i].dt).format("hA") == "11AM") {
@@ -178,7 +192,6 @@ $(function() {
 function populateResultsPage(cityName) {
     getGeoCodingAPI();
     setTimeout(getWeatherAPI, 2000);
-    setTimeout(populateTodaysResults, 4000);
     saveToSearchHistory(cityName);
     populatePastSearches();
 }
@@ -198,12 +211,7 @@ searchBarButtonResults.on("click", function (someEvent) {
     populateResultsPage(cityName);
   });
 
-function populateTodaysResults () {
-  headerOne.text(cityName + ", " + theDate);
-  temp.text("Temp: " + theTemp + " °F");
-  wind.text("Wind: " + theWind + " MPH");
-  humidity.text("Humidity: " + theHumidity + " %");
-}
+
 
 function saveToSearchHistory (cityName) {
     //need to indicate what value cityName is set to depending on which searchButton is pressed
@@ -236,7 +244,6 @@ pastSearchesContainer.on("click", function(event) {
     cityName = clicked.textContent;
     getGeoCodingAPI();
     setTimeout(getWeatherAPI, 2000);
-    setTimeout(populateTodaysResults, 4000);
     //need to restructure the array to have the search history accurately reflect the most recent search
     var theArray = localStorage.getItem("searchHistory");
     var searchHistory = JSON.parse(theArray);
