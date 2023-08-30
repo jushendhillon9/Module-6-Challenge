@@ -172,6 +172,7 @@ $(function() {
                 $(weatherCards[cardIndexTwo]).children().eq(1).text("Temp: " + newTemp + " °F");
                 if (newTemp > 77) {
                     $(weatherCards[cardIndexTwo]).children().eq(2).attr("src", "./Assets/sunIcon.png");
+                    $(weatherCards[cardIndexTwo]).removeClass("coldCardBackground");
                     $(weatherCards[cardIndexTwo]).addClass("hotCardBackground");
                 }
                 else {
